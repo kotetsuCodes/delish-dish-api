@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -10,16 +11,28 @@ using Microsoft.Extensions.Logging;
 
 namespace DelishDishApi
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+  public class Program
+  {
+    private static IConfiguration Configuration { get; set; }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+    public static void Main(string[] args)
+    {
+      var builder = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json");
+
+      Configuration = builder.Build();
+
+      BuildWebHost(args).Run();
     }
+
+    public static IWebHost BuildWebHost(string[] args) =>
+        WebHost.CreateDefaultBuilder(args)
+            .UseStartup<Startup>()
+    .UseKestrel(options =>
+    {
+      options.Listen(IPAddress.Parse(Configuration["ListenHost"]), int.Parse(Configuration["ListenPort"]));
+    })
+    .Build();
+  }
 }
