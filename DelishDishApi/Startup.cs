@@ -65,6 +65,8 @@ namespace DelishDishApi
       // Add application services.
       services.AddTransient<IEmailSender, EmailSender>();
 
+      services.AddCors();
+
       services.AddMvc();
     }
 
@@ -78,6 +80,11 @@ namespace DelishDishApi
       }
 
       app.UseAuthentication();
+
+      app.UseCors(options =>
+      {
+        options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+      });
 
       app.UseMvc();
 
