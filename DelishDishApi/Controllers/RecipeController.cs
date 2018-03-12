@@ -26,9 +26,12 @@ namespace DelishDishApi.Controllers
       _userManager = userManager;
     }
 
+    [HttpPost]
     public async Task<object> GetRecipes()
     {
-      throw new NotImplementedException();
+      var result = await _userManager.GetUserAsync(HttpContext.User);
+
+      return result.Recipes ?? new List<Data.Recipe>();
     }
 
     public async Task<IActionResult> CreateRecipe([FromBody]Data.Recipe model)
