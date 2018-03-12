@@ -46,7 +46,7 @@ namespace DelishDishApi.Controllers
       if(result.Succeeded)
       {
         var appUser = _userManager.Users.SingleOrDefault(u => u.Email == authRequest.Email);
-        return await generateJwtToken(authRequest.Email, appUser);
+        return new { Token = await generateJwtToken(authRequest.Email, appUser) };
       }
 
       throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
