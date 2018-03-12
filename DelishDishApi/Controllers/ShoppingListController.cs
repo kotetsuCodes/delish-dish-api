@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DelishDishApi.Data;
 using DelishDishApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +16,7 @@ namespace DelishDishApi.Controllers
   public class ShoppingListController : Controller
   {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ApplicationDbContext _dbContext;
 
     public ShoppingListController(
       UserManager<ApplicationUser> userManager)
@@ -22,7 +24,7 @@ namespace DelishDishApi.Controllers
       _userManager = userManager;
     }
 
-    [HttpGet]
+    [HttpPost]
     public async Task<object> GetShoppingLists()
     {
       var result = await _userManager.GetUserAsync(HttpContext.User);
