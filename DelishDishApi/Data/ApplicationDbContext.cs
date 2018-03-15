@@ -40,8 +40,17 @@ namespace DelishDishApi.Data
   {
     public int RecipeId { get; set; }
     public string Name { get; set; }
+    public string ImageUrl { get; set; }
 
-    public List<IngredientDetail> IngredientDetails { get; set; }
+    public List<RecipeInstruction> Instructions { get; set; }
+    public List<IngredientDetail> Ingredients { get; set; }
+  }
+
+  public class RecipeInstruction
+  {
+    public int RecipeInstructionId { get; set; }
+    public int InstructionOrder { get; set; }
+    public string Content { get; set; }
   }
 
   public class IngredientDetail

@@ -12,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 namespace DelishDishApi.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180315002142_AddRecipeInstructionsAndImageUrl")]
+    partial class AddRecipeInstructionsAndImageUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,7 +272,7 @@ namespace DelishDishApi.Data.Migrations
             modelBuilder.Entity("DelishDishApi.Data.IngredientDetail", b =>
                 {
                     b.HasOne("DelishDishApi.Data.Recipe")
-                        .WithMany("Ingredients")
+                        .WithMany("IngredientDetails")
                         .HasForeignKey("RecipeId");
                 });
 
@@ -289,7 +290,7 @@ namespace DelishDishApi.Data.Migrations
             modelBuilder.Entity("DelishDishApi.Data.RecipeInstruction", b =>
                 {
                     b.HasOne("DelishDishApi.Data.Recipe")
-                        .WithMany("Instructions")
+                        .WithMany("RecipeInstructions")
                         .HasForeignKey("RecipeId");
                 });
 
