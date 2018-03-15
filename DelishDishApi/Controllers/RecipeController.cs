@@ -30,21 +30,24 @@ namespace DelishDishApi.Controllers
     public async Task<object> GetRecipes()
     {
       var result = await _userManager.GetUserAsync(HttpContext.User);
+      var user = await _dbContext.Users.Include("Recipes").SingleOrDefaultAsync(u => u.Id == result.Id);
 
-      return result.Recipes ?? new List<Data.Recipe>();
+      return user.Recipes ?? new List<Data.Recipe>();
     }
 
     public async Task<IActionResult> CreateRecipe([FromBody]Data.Recipe model)
     {
       var result = await _userManager.GetUserAsync(HttpContext.User);
-      var user = await _dbContext.Users.Include("Recipes.IngredientDetails").SingleOrDefaultAsync(u => u.Id == result.Id);
+      var user = await _dbContext.Users.Include("Recipes.Ingredients").SingleOrDefaultAsync(u => u.Id == result.Id);
 
-      //model.IngredientDetails.AddRange(model.IngredientDetails);
-      result.Recipes.Add(model);
+      //model.IngredientDetails.AddRange(model.IngredientDetails);      
+      user.Recipes.Add(model);
 
       await _userManager.UpdateAsync(result);
 
-      return NoContent();
+      await _dbContext.SaveChangesAsync();
+
+      return Ok(model);
     }
   }
 }
